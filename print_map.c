@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:04:40 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/14 01:57:53 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/14 02:06:43 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	ft_virtical(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
 #define min(a,b) ((a) < (b)) ? (a) : (b)
 float ft_scale(t_data *data, t_fdf *tab)
 {
-    // Calculate a reasonable scale factor
     float scale_factor = min(
         ((float)data->img->width) / ((float)tab->width * 2),
         ((float)data->img->height) / ((float)tab->height * 2)

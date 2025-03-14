@@ -6,77 +6,87 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:04:40 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/06 00:30:30 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/14 00:10:39 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#define H 1920
-#define W 1080
+#include <math.h>
 #define BASE_SCALE 30
-void	ft_lkhtisarat(t_fdf *tab, int index_y, int index_x, t_data *data, int offset_x,int offset_y,int SCALE)
+void	ft_hirzontal(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
 {
-		data->x1 = index_x * SCALE;
-		data->y1 = index_y * SCALE;
-		data->z1 = tab->map[index_y][index_x] * (SCALE / 8);
-		data->x2 = (index_x + 1) * SCALE;
-		data->y2 = index_y * SCALE;
-		data->z2 = tab->map[index_y][index_x + 1] * (SCALE / 8);
-		isometric(&data->x1, &data->y1, data->z1);
+	if (index_x < tab->width - 1)
+	{
+		data->x2 = (index_x + 1) * tab->SCALE     ;
+		data->y2 = index_y * tab->SCALE    ;
+		data->z2 = tab->map[index_y][index_x + 1] * zoo;
 		isometric(&data->x2, &data->y2, data->z2);
-		draw_line_dda(data, (data->x1 + offset_x)  , (data->y1 + offset_y),
-			(data->x2 + offset_x) , (data->y2 + offset_y) );
+		draw_line_dda(data, (data->x1 + tab->sclaing_x ), (data->y1 + tab->sclaing_y  ), (data->x2  + tab->sclaing_x ), (data->y2 + tab->sclaing_y ));
+	}
+	
 }
 
-void	ft_lkhtisarat2(t_fdf *tab, int index_y, int index_x, t_data *data,int offset_x,int offset_y,int  SCALE)
+void	ft_virtical(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
 {
-		data->x1 = index_x * SCALE;
-		data->y1 = index_y * SCALE;
-		data->z1 = tab->map[index_y][index_x] * (SCALE / 8);
-		data->x2 = index_x * SCALE;
-		data->y2 = (index_y + 1) * SCALE;
-		data->z2 = tab->map[index_y + 1][index_x] * (SCALE / 8);
-		isometric(&data->x1, &data->y1, data->z1);
+		if (index_y < tab->height - 1)
+		{
+		data->x2 = index_x * tab->SCALE  ;
+		data->y2 = (index_y + 1) * tab->SCALE   ;
+		data->z2 = tab->map[index_y + 1][index_x] * zoo;
 		isometric(&data->x2, &data->y2, data->z2);
-		draw_line_dda(data, (data->x1 + offset_x) , (data->y1 + offset_y),
-			(data->x2 + offset_x) , (data->y2 + offset_y));
+		draw_line_dda(data, (data->x1 + tab->sclaing_x ), (data->y1 + tab->sclaing_y  ), (data->x2  + tab->sclaing_x ), (data->y2 + tab->sclaing_y ));
+		}
 }
-int ft_scale_calcule(t_fdf *tab)
+
+
+#define min(a,b) ((a) < (b)) ? (a) : (b)
+int ft_scale(t_data *data, t_fdf *tab)
 {
-	int max_dimension;
-	int SCALE ;
-	if(tab->width > tab->height)
-		max_dimension = tab->width;
-	else
-		max_dimension = tab->height;
-	if(max_dimension > 20) 
-	  SCALE =(BASE_SCALE * 20) / max_dimension;
-	else 
-		SCALE = BASE_SCALE;
-	return SCALE;
+
+    float scale_factor = min(
+        ((float)data->img->width) / ((float)tab->width * 6 ),
+        ((float)data->img->height) / ((float)tab->height * 6)
+    );
+	if(scale_factor > 30 || scale_factor < 2)
+	{
+		if(scale_factor > 30 )
+			scale_factor = 30;
+		else  
+			scale_factor = 2;
+	}
+	
+    tab->sclaing_x =  (data->img->width - ((((float)tab->width / 22)* scale_factor) ) ) / 2;
+    tab->sclaing_y = (data->img->height - ((float)tab->height ) * scale_factor )  / 2;
+    // printf("scalingx: %f, scalingy : %f\n", tab->sclaing_x,tab->sclaing_y);
+    return scale_factor ;
 }
+
 void	print_map(t_fdf *tab, t_data *data)
 {
-	int	index_y;
-	int	index_x;
-	index_y = 0;
-	int SCALE = ft_scale_calcule(tab);
-	int offset_x = (H - (tab->width * SCALE)) / 2;
-	int offset_y = (W - (tab->height * SCALE)) / 2;
+    int index_y = 0 ;
+    int index_x = 0;
+	tab->SCALE = ft_scale(data,tab);
+	int zoo;
+	if(tab->SCALE < 10)
+	{
+		zoo = (tab->SCALE / 2);
+	}
+	else  
+		zoo =  (tab->SCALE / 8);
+	printf("%d",tab->SCALE);
 
+	index_y = 0;
 	while (index_y < tab->height)
 	{
 		index_x = 0;
 		while (index_x < tab->width)
 		{
-			if (index_x < tab->width - 1)
-			{
-				ft_lkhtisarat(tab, index_y, index_x, data,offset_x,offset_y,SCALE);
-			}
-			if (index_y < tab->height - 1)
-			{
-				ft_lkhtisarat2(tab, index_y, index_x, data,offset_x,offset_y,SCALE);
-			}
+			data->x1 = index_x * tab->SCALE ;
+			data->y1 = index_y * tab->SCALE  ;
+			data->z1 = tab->map[index_y][index_x] * zoo;
+			isometric(&data->x1, &data->y1, data->z1);
+			ft_hirzontal(tab, index_y, index_x, data,zoo);
+			ft_virtical(tab, index_y, index_x, data,zoo);	
 			index_x++;
 		}
 		index_y++;

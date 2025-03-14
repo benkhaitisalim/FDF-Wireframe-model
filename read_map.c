@@ -6,11 +6,15 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:26:14 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/01 16:13:39 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/12 02:56:47 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "get_next_line/get_next_line.h"
+#include "libft/libft.h"
+#include <stdio.h>
+#include <unistd.h>
 int	get_height(t_fdf *tab)
 {
 	int		fd;
@@ -20,16 +24,14 @@ int	get_height(t_fdf *tab)
 	fd = open(tab->av[1], O_RDONLY);
 	if(fd == -1)
 		exit(0);
-	line = get_next_line(fd);
 	height = 0;
-	while(line)
+	while((line = get_next_line(fd)) != NULL)
 	{
 		height++;
 		free(line);
-		line = get_next_line(fd);
-
 	}
 	close (fd);
+	free(line);
 	return height;
 }
 int get_width(t_fdf *tab)
@@ -39,29 +41,21 @@ int get_width(t_fdf *tab)
 	char **arr;
 	int width;
 	fd = open(tab->av[1], O_RDONLY);
-	if(fd == -1)
-		exit(0);
 	line = get_next_line(fd);
-	if(!line)
-	{
-		close(fd);
-		return (-1);
-	}
 	arr = ft_split(line,' ');
-	if(!arr)
+	if(!line || !arr)
 	{
-		free(line);
-		close(fd);
-		return -1;
+		ft_free(arr);
+		exit(-1);
 	}
 	width = 0;
 	while (arr[width])
 	{
 		width++;
 	}
+	close(fd);
 	free(line);
 	ft_free(arr);
-	close(fd);
 	return width;
 }
 
@@ -71,60 +65,49 @@ int **allocation_for_map(t_fdf *tab)
 	int index;
 	tab->height = get_height(tab);
 	tab->width = get_width(tab);
-	result = malloc(sizeof(int *) * tab->height);
+	result = ft_calloc((sizeof(int  *)) * (tab->height), sizeof(int * ));
 	if(!result)
 	{
 		free(result);
 		exit(0);
+
 	}
 	index = 0;
-	while (index < tab-> height)
+	while (index < tab->height)
 	{
-		result[index] = malloc(sizeof(int) * tab->width);
-		if(!result[index])
-		{
-			int j = 0;
-			while(j < index)
-			{
-				free(result[j]);
-				j++;
-			}
-			free(result);
-			exit(-1);
-		}
+		result[index] = ft_calloc(sizeof(int ) * (tab->width),sizeof(int));
 		index++;
 	}
 	return result;
 }
 void read_file(t_fdf *tab)
-{
+{ 
 	char	*str;
-	char	**s_str;
+	char	**s_str = NULL;
 	int		fd;
 	int		index1;
 	int		index2;
-
-	tab->map = allocation_for_map(tab);
-	tab->height = get_height(tab);
-	tab->width = get_width(tab);
 	fd = open(tab->av[1],O_RDONLY);
-	if (fd == -1)
-		exit(0);
 	str = get_next_line(fd);
-	index1 = 0;
-
-	while (str)
+	tab->map = allocation_for_map(tab);
+	if (fd == -1 || !str)
 	{
-		s_str = ft_split(str,' ');
+		close(fd);
+		free(str);
+		exit(0);
+	}   
+	index1 = 0;
+	while (str && index1 < tab->height)
+	{ 
 		index2  = 0;
-		while (index2 < tab->width)
+		s_str = ft_split(str,' ');
+		while (s_str[index2]&& index2 < tab->width)
 		{
-
 			tab->map[index1][index2] = ft_atoi(s_str[index2]);
 			index2++;
 		}
-		free(str);
 		ft_free(s_str);
+		free(str);
 		str = get_next_line(fd);
 		index1++;
 	}

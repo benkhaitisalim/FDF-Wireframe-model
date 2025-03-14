@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 
 LIBFT_DIR = libft
 GET_NEXT_LINE_DIR = get_next_line
@@ -8,7 +8,7 @@ LIBFT_INC_DIR = $(LIBFT_DIR)/include
 GET_NEXT_LINE_SRC_DIR = $(GET_NEXT_LINE_DIR)
 GET_NEXT_LINE_INC_DIR = $(GET_NEXT_LINE_DIR)
 FDF_SRC_DIR = src
-FLAG_MLX =  MLX/build/libmlx42.a  MLX/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit
+FLAG_MLX =  MLX/build/libmlx42.a  MLX/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit 
 LIBFT_A = $(LIBFT_DIR)/libft.a
 GET_NEXT_LINE_O = $(GET_NEXT_LINE_SRC_DIR)/get_next_line.c $(GET_NEXT_LINE_SRC_DIR)/get_next_line_utils.c
 INCLUDE_FDF = fdf.h
@@ -28,7 +28,7 @@ LIBFT_OBJS = $(LIBFT_SRC_DIR)/ft_isalpha.o $(LIBFT_SRC_DIR)/ft_isdigit.o $(LIBFT
 FDF_SRCS = print_map.c dda_algo.c read_map.c isometric.c free_ram.c main.c
 FDF_OBJS = $(FDF_SRCS:.c=.o)
 
-NAME = fdf
+NAME = fdfv1
 
 all: $(NAME)
 

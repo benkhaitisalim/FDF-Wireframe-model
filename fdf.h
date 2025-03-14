@@ -6,11 +6,15 @@
 #include <stdio.h>
 #include <math.h>
 #include "./libft/libft.h"
+#define MAX(a,b) ((a) > (b)) ? (a) : (b)
+#define MIN(a,b) ((a) < (b)) ? (a) : (b)
+
 typedef struct s_data {
     mlx_t *mlx;
     mlx_image_t *img;
 	int x1;
     int y1;
+    
     int z1;
 	int x2;
     int y2;
@@ -21,20 +25,16 @@ typedef struct s_fdf {
 	char **av;
 	 int height;
 	 int width;
+    int SCALE;
+    float sclaing_x;
+    float sclaing_y;
     int colors;
     
+    
 } t_fdf;
-typedef struct s_isometric {
-	uint32_t x_height;
-	uint32_t y_height;
-    uint32_t z_height;
-    uint32_t x_width;
-	uint32_t y_width;
-    uint32_t z_width;
-} t_isometric;
+
 
 void put_pixels(t_data *data,  const uint32_t x,  const uint32_t y,const uint32_t color);
-int ft_abs(int num);
 int get_width(t_fdf *tab);
 void read_file(t_fdf *tab);
 void isometric(int *x , int *y , int z);
@@ -46,7 +46,7 @@ char	*ft_strdup(const char *string);
 char	*get_next_line(int fd);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *str);
-void draw_line_dda(t_data *data, const uint32_t x1, const uint32_t y1, const uint32_t x2, const uint32_t y2);
+void draw_line_dda(t_data *data,  int32_t x1,  int32_t y1,  int32_t x2,  int32_t y2);
 mlx_image_t* mlx_new_image(mlx_t* mlx, uint32_t width, uint32_t height);
 void mlx_loop(mlx_t* mlx);
 void mlx_terminate(mlx_t* mlx);

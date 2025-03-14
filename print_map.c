@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:04:40 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/14 00:10:39 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/14 01:57:53 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,58 @@ void	ft_virtical(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
 		}
 }
 
+#define max(a,b) ((a) > (b)) ? (a) : (b)
 
 #define min(a,b) ((a) < (b)) ? (a) : (b)
-int ft_scale(t_data *data, t_fdf *tab)
+float ft_scale(t_data *data, t_fdf *tab)
 {
-
+    // Calculate a reasonable scale factor
     float scale_factor = min(
-        ((float)data->img->width) / ((float)tab->width * 6 ),
-        ((float)data->img->height) / ((float)tab->height * 6)
+        ((float)data->img->width) / ((float)tab->width * 2),
+        ((float)data->img->height) / ((float)tab->height * 2)
     );
-	if(scale_factor > 30 || scale_factor < 2)
+    
+    if(scale_factor > 30)
+        scale_factor = 30;
+    else if(scale_factor < 2)
+        scale_factor = 2;
+    
+    float max_x = 0, min_x = 0, max_y = 0, min_y = 0;
+    int y= 0;
+    while(y < tab->height) 
 	{
-		if(scale_factor > 30 )
-			scale_factor = 30;
-		else  
-			scale_factor = 2;
-	}
-	
-    tab->sclaing_x =  (data->img->width - ((((float)tab->width / 22)* scale_factor) ) ) / 2;
-    tab->sclaing_y = (data->img->height - ((float)tab->height ) * scale_factor )  / 2;
-    // printf("scalingx: %f, scalingy : %f\n", tab->sclaing_x,tab->sclaing_y);
-    return scale_factor ;
-}
-
-void	print_map(t_fdf *tab, t_data *data)
+		int x = 0;
+        while(x < tab->width ) {
+            float px = x * scale_factor;
+            float py = y * scale_factor;
+            float pz = tab->map[y][x] * (scale_factor / 8); 
+            
+            float iso_x, iso_y;
+            iso_x = px - py;
+            iso_y = (px + py) / 2 - pz;
+            
+            if(x == 0 && y == 0) {
+                min_x = max_x = iso_x;
+                min_y = max_y = iso_y;
+            } else {
+                min_x = min(min_x, iso_x);
+                max_x = max(max_x, iso_x);
+                min_y = min(min_y, iso_y);
+                max_y = max(max_y, iso_y);
+            }
+			x++;
+        }
+		y++;
+    }
+    
+    float width = max_x - min_x;
+    float height = max_y - min_y;
+    
+    tab->sclaing_x = (data->img->width - width) / 2 - min_x;
+    tab->sclaing_y = (data->img->height - height) / 2 - min_y;
+    
+    return scale_factor;
+}void	print_map(t_fdf *tab, t_data *data)
 {
     int index_y = 0 ;
     int index_x = 0;

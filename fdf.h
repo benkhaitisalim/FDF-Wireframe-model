@@ -5,7 +5,7 @@
 #include "get_next_line/get_next_line.h"
 #include <stdio.h>
 #include <math.h>
-#include "./libft/libft.h"
+#include "libft/libft.h"
 #define MAX(a,b) ((a) > (b)) ? (a) : (b)
 #define MIN(a,b) ((a) < (b)) ? (a) : (b)
 

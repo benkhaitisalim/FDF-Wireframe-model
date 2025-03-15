@@ -25,10 +25,10 @@ LIBFT_OBJS = $(LIBFT_SRC_DIR)/ft_isalpha.o $(LIBFT_SRC_DIR)/ft_isdigit.o $(LIBFT
              $(LIBFT_SRC_DIR)/ft_strdup.o $(LIBFT_SRC_DIR)/ft_strmapi.o $(LIBFT_SRC_DIR)/ft_striteri.o \
              $(LIBFT_SRC_DIR)/ft_itoa.o
 
-FDF_SRCS = print_map.c dda_algo.c read_map.c isometric.c free_ram.c main.c
+FDF_SRCS = print_map.c dda_algo.c read_map.c isometric.c free_ram.c main.c scale.c key_exit.c
 FDF_OBJS = $(FDF_SRCS:.c=.o)
 
-NAME = fdfv1
+NAME = fdf
 
 all: $(NAME)
 

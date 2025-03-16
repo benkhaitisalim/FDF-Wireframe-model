@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 23:53:03 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/16 05:52:17 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:05:31 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ typedef struct s_line
 }	t_line;
 typedef struct s_aloc
 {
-		char	*str;
+	char	*str;
 	char	**s_str;
 	int		fd;
 	int		index1;
 	int		index2;
 
-} t_aloc;
+}	t_aloc;
 typedef struct s_data {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
@@ -112,8 +112,8 @@ void			mlx_terminate(mlx_t *mlx);
 void			key_hook(mlx_key_data_t key, void *p);
 float			ft_scale(t_data *data, t_fdf *tab, t_centre *cen);
 void			print_map(t_fdf *tab, t_data *data, t_centre *cen);
-int	**allocation_for_map(t_fdf *tab);
-int	get_width(t_fdf *tab);
-int	get_height(t_fdf *tab);
+int				**allocation_for_map(t_fdf *tab);
+int				get_width(t_fdf *tab);
+int				get_height(t_fdf *tab);
 
 #endif

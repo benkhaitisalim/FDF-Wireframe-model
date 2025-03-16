@@ -6,11 +6,12 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 05:51:27 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/16 05:52:34 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/16 05:55:53 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
 int	get_height(t_fdf *tab)
 {
 	int		fd;
@@ -85,4 +86,3 @@ int	**allocation_for_map(t_fdf *tab)
 	}
 	return (result);
 }
-

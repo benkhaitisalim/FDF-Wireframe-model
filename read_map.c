@@ -6,16 +6,31 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:26:14 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/16 05:52:42 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/16 18:04:57 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+int	ft_max(int a, int b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
+
+int	ft_min(int a, int b)
+{
+	if (a < b)
+		return (a);
+	else
+		return (b);
+}
+
 void	reading(t_fdf *tab, t_aloc	aloc)
 {
-
-		aloc.index1 = 0;
+	aloc.index1 = 0;
 	while (aloc.str && aloc.index1 < tab->height)
 	{
 		aloc.index2 = 0;
@@ -46,6 +61,6 @@ void	read_file(t_fdf *tab)
 		free(aloc.str);
 		exit(1);
 	}
-	reading(tab,aloc);
+	reading(tab, aloc);
 	close(aloc.fd);
 }

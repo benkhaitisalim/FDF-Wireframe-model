@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 00:59:59 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/16 01:44:10 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/16 05:35:26 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,27 @@
 
 int ft_max(int a, int b)
 {
-    if(a > b)
-            return a;
+    if (a > b)
+        return (a);
     else  
-        return b;
+        return (b);
 }
 
 int ft_min(int a, int b)
 {
-    if(a < b)
-            return a;
+    if (a < b)
+        return (a);
     else  
-        return b;
+        return (b);
 }
 
 int ft_strcmp(char *str, char *str2)
 {
     int i;
     int j;
-    i = 0,j = 0;
+
+    i = 0;
+    j = 0;
     while(str[i] == str2[j] && str[i] && str[j])
     {
         i++;
@@ -61,12 +63,3 @@ int ft_abs(int num)
     return num;
 }
 
-void ft_check_file(char *valid, char **av)
-{
-		valid = ft_strchr(av[1], '.');
-		if(!valid || ft_strcmp(valid, ".fdf"))
-		{
-			ft_putstr_fd("error : nari kabatiha khaso ykon .fdf ", 2);
-			exit (0) ;
-		}
-}

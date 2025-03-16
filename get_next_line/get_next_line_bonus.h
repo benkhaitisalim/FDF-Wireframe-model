@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_ram.c                                         :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 18:30:35 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/16 05:36:32 by bsalim           ###   ########.fr       */
+/*   Created: 2024/12/15 09:53:54 by bsalim            #+#    #+#             */
+/*   Updated: 2024/12/15 13:59:44 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
 
-void	ft_free(char **arr)
-{
-	int	i;
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *string);
+char	*get_next_line(int fd);
+void	*ft_calloc(size_t count, size_t size);
+size_t	ft_strlen(const char *str);
 
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
+# define EXTRA_FD 1024
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
-void	ft_check_file(char *valid, char **av)
-{
-	valid = ft_strchr(av[1], '.');
-	if (!valid || ft_strcmp(valid, ".fdf"))
-	{
-		ft_putstr_fd("error : nari kabatiha khaso ykon .fdf ", 2);
-		exit (0);
-	}
-}
+#endif

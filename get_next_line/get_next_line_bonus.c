@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 15:34:36 by bsalim            #+#    #+#             */
-/*   Updated: 2024/12/17 00:35:37 by bsalim           ###   ########.fr       */
+/*   Created: 2024/12/15 09:53:54 by bsalim            #+#    #+#             */
+/*   Updated: 2024/12/17 00:37:54 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <time.h>
+#include "get_next_line_bonus.h"
 
 char	*get_line_from_buffer(int fd, char *left_c, char *buffer);
 char	*set_line(char *line_buffer);
@@ -19,21 +18,21 @@ char	*ft_strrchr(const char *s, int c);
 
 char	*get_next_line(int fd)
 {
-	static char	*left_c;
+	static char	*left_c[EXTRA_FD];
 	char		*line;
 	char		*buffer;
 
 	if ((fd < 0 || BUFFER_SIZE <= 0) || read(fd, 0, 0) < 0)
 	{
-		free(left_c);
-		left_c = NULL;
+		free (left_c[fd]);
+		left_c[fd] = NULL;
 		return (NULL);
 	}
 	buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buffer)
 		return (NULL);
-	line = get_line_from_buffer(fd, left_c, buffer);
-	left_c = set_line(line);
+	line = get_line_from_buffer(fd, left_c[fd], buffer);
+	left_c[fd] = set_line(line);
 	free(buffer);
 	buffer = NULL;
 	if (!line)
@@ -77,7 +76,7 @@ char	*get_line_from_buffer(int fd, char *left_c, char *buffer)
 	{
 		b_read = read(fd, buffer, BUFFER_SIZE);
 		if (b_read == -1)
-			return (left_c);
+			return (free(left_c), left_c);
 		else if (b_read == 0 && !left_c)
 			break ;
 		buffer[b_read] = '\0';

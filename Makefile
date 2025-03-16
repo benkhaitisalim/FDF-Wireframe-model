@@ -8,7 +8,7 @@ LIBFT_INC_DIR = $(LIBFT_DIR)/include
 GET_NEXT_LINE_SRC_DIR = $(GET_NEXT_LINE_DIR)
 GET_NEXT_LINE_INC_DIR = $(GET_NEXT_LINE_DIR)
 FDF_SRC_DIR = src
-FLAG_MLX =  MLX/build/libmlx42.a  MLX/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit 
+FLAG_MLX =  /Users/bsalim/MLX/build/libmlx42.a  /Users/bsalim/MLX/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit 
 LIBFT_A = $(LIBFT_DIR)/libft.a
 GET_NEXT_LINE_O = $(GET_NEXT_LINE_SRC_DIR)/get_next_line.c $(GET_NEXT_LINE_SRC_DIR)/get_next_line_utils.c
 INCLUDE_FDF = fdf.h
@@ -25,7 +25,7 @@ LIBFT_OBJS = $(LIBFT_SRC_DIR)/ft_isalpha.o $(LIBFT_SRC_DIR)/ft_isdigit.o $(LIBFT
              $(LIBFT_SRC_DIR)/ft_strdup.o $(LIBFT_SRC_DIR)/ft_strmapi.o $(LIBFT_SRC_DIR)/ft_striteri.o \
              $(LIBFT_SRC_DIR)/ft_itoa.o
 
-FDF_SRCS = print_map.c dda_algo.c read_map.c isometric.c free_ram.c main.c scale.c key_exit.c
+FDF_SRCS = print_map.c dda_algo.c read_map.c isometric.c free_ram.c main.c scale.c key_exit.c fdf_utlis.c
 FDF_OBJS = $(FDF_SRCS:.c=.o)
 
 NAME = fdf

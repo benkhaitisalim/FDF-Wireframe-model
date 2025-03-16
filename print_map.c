@@ -6,64 +6,81 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:04:40 by bsalim            #+#    #+#             */
-/*   Updated: 2025/03/15 03:41:08 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/03/16 02:53:44 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <math.h>
-#define BASE_SCALE 30
-void	ft_hirzontal(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
+
+void	ft_hirzontal(t_fdf *tab, int index_y, int index_x, t_data *data)
 {
+	t_line	line;
+
 	if (index_x < tab->width - 1)
 	{
-		data->x2 = (index_x + 1) * tab->SCALE     ;
-		data->y2 = index_y * tab->SCALE    ;
-		data->z2 = tab->map[index_y][index_x + 1] * zoo;
-		isometric(&data->x2, &data->y2, data->z2);
-		draw_line_dda(data, (data->x1 + tab->sclaing_x ), (data->y1 + tab->sclaing_y  ), (data->x2  + tab->sclaing_x ), (data->y2 + tab->sclaing_y ));
+		line.x1 = data->x1;
+		line.y1 = data->y1;
+		line.x2 = (index_x + 1) * tab->scale;
+		line.y2 = index_y * tab->scale;
+		line.z2 = tab->map[index_y][index_x + 1] * data->zoo;
+		isometric(&line.x2, &line.y2, line.z2);
+		line.x1 += tab->sclaing_x;
+		line.y1 += tab->sclaing_y;
+		line.x2 += tab->sclaing_x;
+		line.y2 += tab->sclaing_y;
+		draw_line_dda(data, line);
 	}
-	
 }
 
-void	ft_virtical(t_fdf *tab, int index_y, int index_x, t_data *data,int zoo)
+void	ft_virtical(t_fdf *tab, int index_y, int index_x, t_data *data)
 {
-		if (index_y < tab->height - 1)
-		{
-		data->x2 = index_x * tab->SCALE  ;
-		data->y2 = (index_y + 1) * tab->SCALE   ;
-		data->z2 = tab->map[index_y + 1][index_x] * zoo;
-		isometric(&data->x2, &data->y2, data->z2);
-		draw_line_dda(data, (data->x1 + tab->sclaing_x ), (data->y1 + tab->sclaing_y  ), (data->x2  + tab->sclaing_x ), (data->y2 + tab->sclaing_y ));
-		}
-}
+	t_line	line;
 
-void	print_map(t_fdf *tab, t_data *data,t_centre *cen)
-{
-    int index_y = 0 ;
-    int index_x = 0;
-	tab->SCALE = ft_scale(data,tab,cen);
-	int zoo;
-	if(tab->SCALE < 10)
+	if (index_y < tab->height - 1)
 	{
-		zoo = (tab->SCALE / 2);
+		line.x1 = data->x1;
+		line.y1 = data->y1;
+		line.x2 = index_x * tab->scale;
+		line.y2 = (index_y + 1) * tab->scale;
+		line.z2 = tab->map[index_y + 1][index_x] * data->zoo;
+		isometric(&line.x2, &line.y2, line.z2);
+		line.x1 += tab->sclaing_x;
+		line.y1 += tab->sclaing_y;
+		line.x2 += tab->sclaing_x;
+		line.y2 += tab->sclaing_y;
+		draw_line_dda(data, line);
 	}
-	else  
-		zoo =  (tab->SCALE / 8);
-	printf("%d",tab->SCALE);
+}
 
+void	ft_checksclae(t_fdf *tab, t_data *data, t_centre *cen)
+{
+	tab->scale = ft_scale(data, tab, cen);
+	if (tab->scale < 10)
+	{
+		data->zoo = (tab->scale / 2);
+	}
+	else
+		data->zoo = (tab->scale / 7);
+}
+
+void	print_map(t_fdf *tab, t_data *data, t_centre *cen)
+{
+	int	index_y;
+	int	index_x;
+
+	ft_checksclae(tab, data, cen);
 	index_y = 0;
 	while (index_y < tab->height)
 	{
 		index_x = 0;
 		while (index_x < tab->width)
 		{
-			data->x1 = index_x * tab->SCALE ;
-			data->y1 = index_y * tab->SCALE  ;
-			data->z1 = tab->map[index_y][index_x] * zoo;
+			data->x1 = index_x * tab->scale;
+			data->y1 = index_y * tab->scale;
+			data->z1 = tab->map[index_y][index_x] * data->zoo;
 			isometric(&data->x1, &data->y1, data->z1);
-			ft_hirzontal(tab, index_y, index_x, data,zoo);
-			ft_virtical(tab, index_y, index_x, data,zoo);	
+			ft_hirzontal(tab, index_y, index_x, data);
+			ft_virtical(tab, index_y, index_x, data);
 			index_x++;
 		}
 		index_y++;
